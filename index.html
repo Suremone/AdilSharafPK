@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>2026 World Cup Prediction</title>
+<link href="https://fonts.googleapis.com/css2?family=Gravitas+One&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f0;
+    --surface: #ffffff;
+    --border: #e0e0d8;
+    --text: #1a1a1a;
+    --muted: #777;
+    --accent: #c8102e;
+    --accent2: #003087;
+    --gold: #b8972a;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  h1, h2, h3, .gravitas { font-family: 'Gravitas One', serif; }
+
+  /* ── PAGE SYSTEM ── */
+  .page { display: none; min-height: 100vh; flex-direction: column; }
+  .page.active { display: flex; }
+
+  /* ── WELCOME PAGE ── */
+  #page-welcome {
+    position: relative;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 48px;
+    background: #0a0a14;
+    overflow: hidden;
+  }
+  .welcome-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 60px 160px;
+  }
+  .welcome-bg img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    opacity: 0.85;
+  }
+  .welcome-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 55%;
+    background: linear-gradient(to top, rgba(10,10,20,0.98) 60%, transparent);
+  }
+  .welcome-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 24px;
+    text-align: center;
+  }
+  .welcome-content h1 {
+    color: #fff;
+    font-size: 26px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .welcome-content p {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    margin-bottom: 28px;
+    font-weight: 300;
+  }
+  .input-field {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .input-field::placeholder { color: rgba(255,255,255,0.35); }
+  .input-field:focus { border-color: var(--accent); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Gravitas One', serif;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+    text-align: center;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-secondary { background: var(--accent2); color: #fff; }
+  .btn-gold { background: var(--gold); color: #fff; }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text);
+  }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* ── HEADER BAR ── */
+  .top-bar {
+    background: var(--accent2);
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .top-bar h2 {
+    font-family: 'Gravitas One', serif;
+    font-size: 16px;
+    letter-spacing: 0.3px;
+  }
+  .top-bar .step-badge {
+    margin-left: auto;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+
+  /* ── SCROLL CONTENT ── */
+  .scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px 100px;
+  }
+
+  /* ── BOTTOM BAR ── */
+  .bottom-bar {
+    position: sticky;
+    bottom: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 14px 16px;
+    flex-shrink: 0;
+  }
+
+  /* ── GROUP STAGE ── */
+  .group-label {
+    font-family: 'Gravitas One', serif;
+    font-size: 22px;
+    color: var(--accent2);
+    margin-bottom: 16px;
+  }
+  .flags-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .flag-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 8px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .flag-btn img { width: 52px; height: 34px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); }
+  .flag-btn span { font-size: 11px; font-weight: 700; text-align: center; color: var(--text); }
+  .flag-btn.selected {
+    border-color: var(--accent2);
+    background: #f0f4ff;
+  }
+  .flag-btn.selected::after {
+    content: attr(data-pos);
+    position: absolute;
+    top: 6px; right: 8px;
+    font-family: 'Gravitas One', serif;
+    font-size: 13px;
+    color: var(--accent2);
+  }
+  .flag-btn.eliminated {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* GROUP TABLE */
+  .group-table-label {
+    font-family: 'Gravitas One', serif;
+    font-size: 13px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .group-table {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+    cursor: grab;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .table-row:last-child { border-bottom: none; }
+  .table-row.dragging { opacity: 0.4; }
+  .table-row.drag-over { background: #eef2ff; }
+  .pos-num {
+    font-family: 'Gravitas One', serif;
+    font-size: 16px;
+    width: 22px;
+    text-align: center;
+    color: var(--accent2);
+    flex-shrink: 0;
+  }
+  .table-row:nth-child(1) .pos-num { color: var(--gold); }
+  .table-row:nth-child(2) .pos-num { color: var(--accent2); }
+  .table-row:nth-child(3) .pos-num { color: #888; }
+  .table-row:nth-child(4) .pos-num { color: var(--accent); }
+  .table-row img { width: 32px; height: 21px; object-fit: cover; border-radius: 3px; border: 1px solid var(--border); flex-shrink: 0; }
+  .row-name { font-size: 13px; font-weight: 700; flex: 1; }
+  .drag-handle { color: var(--muted); font-size: 16px; cursor: grab; padding: 0 2px; }
+  .empty-row {
+    color: var(--muted);
+    font-size: 12px;
+    font-style: italic;
+  }
+  .badge-qualified { background: #d4edda; color: #155724; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+  .badge-third { background: #fff3cd; color: #856404; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+  .badge-out { background: #f8d7da; color: #721c24; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+
+  /* ── QUALIFIED PAGE ── */
+  .section-title {
+    font-family: 'Gravitas One', serif;
+    font-size: 18px;
+    color: var(--accent2);
+    margin-bottom: 16px;
+  }
+  .qualified-group {
+    margin-bottom: 20px;
+  }
+  .qualified-group-label {
+    font-family: 'Gravitas One', serif;
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .team-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+  }
+  .team-row img { width: 36px; height: 24px; object-fit: cover; border-radius: 3px; border: 1px solid var(--border); }
+  .team-row .team-name { font-size: 14px; font-weight: 700; }
+  .team-row .team-badge { margin-left: auto; }
+
+  /* ── THIRD PLACE SELECTION ── */
+  .third-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .third-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 6px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .third-btn img { width: 44px; height: 29px; object-fit: cover; border-radius: 3px; }
+  .third-btn span { font-size: 10px; font-weight: 700; text-align: center; }
+  .third-btn.selected { border-color: var(--accent2); background: #f0f4ff; }
+  .third-btn.selected .check-icon { display: block; }
+  .check-icon { display: none; color: var(--accent2); font-size: 12px; }
+  .select-count {
+    text-align: center;
+    font-family: 'Gravitas One', serif;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .select-count span { color: var(--accent); }
+
+  /* ── ROUND OF 32 PAGE ── */
+  .r32-teams {
+    columns: 2;
+    gap: 10px;
+  }
+  .r32-team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    break-inside: avoid;
+  }
+  .r32-team img { width: 28px; height: 18px; object-fit: cover; border-radius: 2px; }
+  .r32-team span { font-size: 11px; font-weight: 700; }
+
+  /* ── MATCH PICKER ── */
+  .match-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .match-header {
+    background: var(--accent2);
+    color: #fff;
+    padding: 8px 14px;
+    font-family: 'Gravitas One', serif;
+    font-size: 13px;
+  }
+  .match-teams {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .match-team {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 10px;
+    cursor: pointer;
+    border: 3px solid transparent;
+    border-radius: 0;
+    transition: all 0.2s;
+    background: var(--surface);
+  }
+  .match-team:first-child { border-right: 1px solid var(--border); }
+  .match-team img { width: 56px; height: 37px; object-fit: cover; border-radius: 5px; border: 1px solid var(--border); }
+  .match-team span { font-size: 12px; font-weight: 700; text-align: center; }
+  .match-team.selected { background: #f0f4ff; border-color: var(--accent2) !important; }
+  .match-team.selected img { box-shadow: 0 0 0 2px var(--accent2); }
+  .vs-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    flex-shrink: 0;
+    font-family: 'Gravitas One', serif;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--bg);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  /* ── RESULTS PAGES ── */
+  .result-team {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+  }
+  .result-team img { width: 40px; height: 26px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border); }
+  .result-team .result-name { font-size: 14px; font-weight: 700; }
+  .result-team .result-match { margin-left: auto; font-size: 11px; color: var(--muted); }
+
+  /* ── FINAL PAGE ── */
+  .champion-reveal {
+    text-align: center;
+    padding: 40px 24px;
+  }
+  .champion-reveal .trophy { font-size: 64px; margin-bottom: 16px; }
+  .champion-reveal h2 { font-family: 'Gravitas One', serif; font-size: 22px; color: var(--gold); margin-bottom: 6px; }
+  .champion-reveal .champ-name { font-family: 'Gravitas One', serif; font-size: 32px; color: var(--accent2); }
+  .champion-reveal img { width: 100px; height: 66px; object-fit: cover; border-radius: 8px; border: 2px solid var(--gold); margin: 16px auto; display: block; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+  .result-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 10px; text-align: center; }
+  .result-box img { width: 48px; height: 32px; object-fit: cover; border-radius: 4px; margin-bottom: 6px; }
+  .result-box .rb-label { font-size: 10px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .result-box .rb-name { font-family: 'Gravitas One', serif; font-size: 13px; color: var(--text); }
+
+  /* error */
+  .error-msg {
+    color: var(--accent);
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 8px;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+
+  /* divider */
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  .info-note {
+    background: #f0f4ff;
+    border-left: 3px solid var(--accent2);
+    padding: 10px 14px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 12px;
+    color: var(--accent2);
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 1: WELCOME
+═══════════════════════════════════════════════ -->
+<div id="page-welcome" class="page active">
+  <div class="welcome-bg">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/17/2026_FIFA_World_Cup_emblem.svg/1280px-2026_FIFA_World_Cup_emblem.svg.png" alt="2026 FIFA World Cup">
+  </div>
+  <div class="welcome-overlay"></div>
+  <div class="welcome-content">
+    <h1>2026 World Cup<br>Prediction Game</h1>
+    <p>Predict the winner of the FIFA World Cup 2026</p>
+    <input class="input-field" id="player-name" type="text" placeholder="Enter your name…" maxlength="40">
+    <button class="btn btn-primary" onclick="startGame()">Save &amp; Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 2: GROUP STAGE (dynamically rendered)
+═══════════════════════════════════════════════ -->
+<div id="page-group" class="page">
+  <div class="top-bar">
+    <h2 id="group-title">Group A</h2>
+    <span class="step-badge" id="group-step">1 / 12</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="group-progress"></div></div>
+  <div class="scroll-content">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Tap flags to assign positions 1→4, then drag to reorder.</p>
+    <div class="flags-grid" id="flags-grid"></div>
+    <div class="group-table-label">Group Standing</div>
+    <div class="group-table" id="group-table"></div>
+  </div>
+  <div class="bottom-bar">
+    <div class="error-msg" id="group-error">Please assign all 4 positions before continuing.</div>
+    <button class="btn btn-primary" id="group-next-btn" onclick="groupNext()">Save &amp; Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 3: AUTO-QUALIFIED TEAMS
+═══════════════════════════════════════════════ -->
+<div id="page-qualified" class="page">
+  <div class="top-bar"><h2>Qualified Teams</h2></div>
+  <div class="scroll-content">
+    <p class="info-note">Top 2 from each group automatically qualify. Tap below to select the best 8 third-place teams.</p>
+    <div id="qualified-list"></div>
+  </div>
+  <div class="bottom-bar">
+    <button class="btn btn-secondary" onclick="goToThirdSelect()">Select Best 8 Third-Place Teams →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 4: THIRD PLACE SELECTION
+═══════════════════════════════════════════════ -->
+<div id="page-third" class="page">
+  <div class="top-bar"><h2>Third-Place Teams</h2></div>
+  <div class="scroll-content">
+    <p class="info-note">12 third-place teams compete. Select the best 8 to advance to the Round of 32.</p>
+    <div class="select-count">Selected: <span id="third-count">0</span> / 8</div>
+    <div class="third-grid" id="third-grid"></div>
+  </div>
+  <div class="bottom-bar">
+    <div class="error-msg" id="third-error">Please select exactly 8 teams.</div>
+    <button class="btn btn-primary" onclick="submitThird()">Submit →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 5: ROUND OF 32 TEAMS
+═══════════════════════════════════════════════ -->
+<div id="page-r32teams" class="page">
+  <div class="top-bar"><h2>Round of 32</h2><span class="step-badge">32 Teams</span></div>
+  <div class="scroll-content">
+    <p class="info-note">These 32 teams will compete in the Round of 32.</p>
+    <div id="r32-teams-list"></div>
+  </div>
+  <div class="bottom-bar">
+    <button class="btn btn-primary" onclick="goToR32Matches()">Round of 32 →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 6: ROUND OF 32 MATCHES
+═══════════════════════════════════════════════ -->
+<div id="page-r32" class="page">
+  <div class="top-bar">
+    <h2>Round of 32</h2>
+    <span class="step-badge" id="r32-step">1 / 8</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="r32-progress"></div></div>
+  <div class="scroll-content" id="r32-content"></div>
+  <div class="bottom-bar">
+    <div class="error-msg" id="r32-error">Please pick a winner for each match.</div>
+    <button class="btn btn-primary" id="r32-btn" onclick="r32Next()">Save &amp; Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 7: R32 RESULTS
+═══════════════════════════════════════════════ -->
+<div id="page-r32results" class="page">
+  <div class="top-bar"><h2>Round of 32 Winners</h2></div>
+  <div class="scroll-content">
+    <div id="r32-winners-list"></div>
+  </div>
+  <div class="bottom-bar">
+    <button class="btn btn-secondary" onclick="goToR16Matches()">Round of 16 →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 8: ROUND OF 16
+═══════════════════════════════════════════════ -->
+<div id="page-r16" class="page">
+  <div class="top-bar">
+    <h2>Round of 16</h2>
+    <span class="step-badge" id="r16-step">1 / 4</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="r16-progress"></div></div>
+  <div class="scroll-content" id="r16-content"></div>
+  <div class="bottom-bar">
+    <div class="error-msg" id="r16-error">Please pick a winner for each match.</div>
+    <button class="btn btn-primary" id="r16-btn" onclick="r16Next()">Save &amp; Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 9: QF TEAMS
+═══════════════════════════════════════════════ -->
+<div id="page-qfteams" class="page">
+  <div class="top-bar"><h2>Quarter-Finals</h2><span class="step-badge">8 Teams</span></div>
+  <div class="scroll-content">
+    <p class="info-note">These 8 teams will compete in the Quarter-Finals.</p>
+    <div id="qf-teams-list"></div>
+  </div>
+  <div class="bottom-bar">
+    <button class="btn btn-primary" onclick="goToQF()">Quarter-Finals →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 10: QUARTER-FINALS
+═══════════════════════════════════════════════ -->
+<div id="page-qf" class="page">
+  <div class="top-bar">
+    <h2>Quarter-Finals</h2>
+    <span class="step-badge" id="qf-step">1 / 2</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="qf-progress"></div></div>
+  <div class="scroll-content" id="qf-content"></div>
+  <div class="bottom-bar">
+    <div class="error-msg" id="qf-error">Please pick a winner for each match.</div>
+    <button class="btn btn-primary" id="qf-btn" onclick="qfNext()">Save &amp; Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 11: QF RESULTS
+═══════════════════════════════════════════════ -->
+<div id="page-qfresults" class="page">
+  <div class="top-bar"><h2>Semi-Final Teams</h2></div>
+  <div class="scroll-content">
+    <div id="qf-winners-list"></div>
+  </div>
+  <div class="bottom-bar">
+    <button class="btn btn-secondary" onclick="goToSF()">Semi-Finals →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 12: SEMI-FINALS
+═══════════════════════════════════════════════ -->
+<div id="page-sf" class="page">
+  <div class="top-bar"><h2>Semi-Finals</h2></div>
+  <div class="scroll-content" id="sf-content"></div>
+  <div class="bottom-bar">
+    <div class="error-msg" id="sf-error">Please pick a winner for each match.</div>
+    <button class="btn btn-primary" onclick="sfSubmit()">Submit →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 13: BRONZE FINAL
+═══════════════════════════════════════════════ -->
+<div id="page-bronze" class="page">
+  <div class="top-bar"><h2>3rd Place Final</h2></div>
+  <div class="scroll-content" id="bronze-content"></div>
+  <div class="bottom-bar">
+    <div class="error-msg" id="bronze-error">Please pick a winner.</div>
+    <button class="btn btn-primary" onclick="bronzeSubmit()">Submit →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 14: FINAL
+═══════════════════════════════════════════════ -->
+<div id="page-final" class="page">
+  <div class="top-bar"><h2>The Final</h2><span class="step-badge">🏆</span></div>
+  <div class="scroll-content" id="final-content"></div>
+  <div class="bottom-bar">
+    <div class="error-msg" id="final-error">Please pick the champion.</div>
+    <button class="btn btn-gold" onclick="finalSubmit()">Submit →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE 15: CHAMPION
+═══════════════════════════════════════════════ -->
+<div id="page-champion" class="page">
+  <div class="top-bar"><h2>Your Prediction</h2></div>
+  <div class="scroll-content">
+    <div class="champion-reveal">
+      <div class="trophy">🏆</div>
+      <div id="champ-greeting" style="font-size:14px;color:var(--muted);margin-bottom:8px;"></div>
+      <h2>World Cup Champion</h2>
+      <img id="champ-flag" src="" alt="">
+      <div class="champ-name" id="champ-name"></div>
+    </div>
+    <div class="divider"></div>
+    <h3 style="font-family:'Gravitas One',serif;font-size:15px;margin-bottom:14px;color:var(--accent2);">Complete Results</h3>
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="rb-label">🥇 Champion</div>
+        <img id="res-champion-flag" src="" alt="">
+        <div class="rb-name" id="res-champion"></div>
+      </div>
+      <div class="result-box">
+        <div class="rb-label">🥈 Runner-Up</div>
+        <img id="res-runnerup-flag" src="" alt="">
+        <div class="rb-name" id="res-runnerup"></div>
+      </div>
+      <div class="result-box">
+        <div class="rb-label">🥉 3rd Place</div>
+        <img id="res-third-flag" src="" alt="">
+        <div class="rb-name" id="res-third"></div>
+      </div>
+      <div class="result-box">
+        <div class="rb-label">4th Place</div>
+        <img id="res-fourth-flag" src="" alt="">
+        <div class="rb-name" id="res-fourth"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+const FLAGS = {
+  "Mexico": "https://flagcdn.com/w80/mx.png",
+  "South Africa": "https://flagcdn.com/w80/za.png",
+  "South Korea": "https://flagcdn.com/w80/kr.png",
+  "Czech Republic": "https://flagcdn.com/w80/cz.png",
+  "Canada": "https://flagcdn.com/w80/ca.png",
+  "Bosnia & Herzegovina": "https://flagcdn.com/w80/ba.png",
+  "Qatar": "https://flagcdn.com/w80/qa.png",
+  "Switzerland": "https://flagcdn.com/w80/ch.png",
+  "Brazil": "https://flagcdn.com/w80/br.png",
+  "Morocco": "https://flagcdn.com/w80/ma.png",
+  "Haiti": "https://flagcdn.com/w80/ht.png",
+  "Scotland": "https://flagcdn.com/w80/gb-sct.png",
+  "USA": "https://flagcdn.com/w80/us.png",
+  "Paraguay": "https://flagcdn.com/w80/py.png",
+  "Australia": "https://flagcdn.com/w80/au.png",
+  "Türkiye": "https://flagcdn.com/w80/tr.png",
+  "Germany": "https://flagcdn.com/w80/de.png",
+  "Curaçao": "https://flagcdn.com/w80/cw.png",
+  "Ivory Coast": "https://flagcdn.com/w80/ci.png",
+  "Ecuador": "https://flagcdn.com/w80/ec.png",
+  "Netherlands": "https://flagcdn.com/w80/nl.png",
+  "Japan": "https://flagcdn.com/w80/jp.png",
+  "Sweden": "https://flagcdn.com/w80/se.png",
+  "Tunisia": "https://flagcdn.com/w80/tn.png",
+  "Belgium": "https://flagcdn.com/w80/be.png",
+  "Egypt": "https://flagcdn.com/w80/eg.png",
+  "Iran": "https://flagcdn.com/w80/ir.png",
+  "New Zealand": "https://flagcdn.com/w80/nz.png",
+  "Spain": "https://flagcdn.com/w80/es.png",
+  "Cape Verde": "https://flagcdn.com/w80/cv.png",
+  "Saudi Arabia": "https://flagcdn.com/w80/sa.png",
+  "Uruguay": "https://flagcdn.com/w80/uy.png",
+  "France": "https://flagcdn.com/w80/fr.png",
+  "Senegal": "https://flagcdn.com/w80/sn.png",
+  "Iraq": "https://flagcdn.com/w80/iq.png",
+  "Norway": "https://flagcdn.com/w80/no.png",
+  "Argentina": "https://flagcdn.com/w80/ar.png",
+  "Algeria": "https://flagcdn.com/w80/dz.png",
+  "Austria": "https://flagcdn.com/w80/at.png",
+  "Jordan": "https://flagcdn.com/w80/jo.png",
+  "Portugal": "https://flagcdn.com/w80/pt.png",
+  "DR Congo": "https://flagcdn.com/w80/cd.png",
+  "Uzbekistan": "https://flagcdn.com/w80/uz.png",
+  "Colombia": "https://flagcdn.com/w80/co.png",
+  "England": "https://flagcdn.com/w80/gb-eng.png",
+  "Croatia": "https://flagcdn.com/w80/hr.png",
+  "Ghana": "https://flagcdn.com/w80/gh.png",
+  "Panama": "https://flagcdn.com/w80/pa.png"
+};
+
+const GROUPS = {
+  A: ["Mexico","South Africa","South Korea","Czech Republic"],
+  B: ["Canada","Bosnia & Herzegovina","Qatar","Switzerland"],
+  C: ["Brazil","Morocco","Haiti","Scotland"],
+  D: ["USA","Paraguay","Australia","Türkiye"],
+  E: ["Germany","Curaçao","Ivory Coast","Ecuador"],
+  F: ["Netherlands","Japan","Sweden","Tunisia"],
+  G: ["Belgium","Egypt","Iran","New Zealand"],
+  H: ["Spain","Cape Verde","Saudi Arabia","Uruguay"],
+  I: ["France","Senegal","Iraq","Norway"],
+  J: ["Argentina","Algeria","Austria","Jordan"],
+  K: ["Portugal","DR Congo","Uzbekistan","Colombia"],
+  L: ["England","Croatia","Ghana","Panama"]
+};
+
+const GROUP_NAMES = Object.keys(GROUPS);
+
+// State
+let state = {
+  playerName: '',
+  groupResults: {}, // {A: [1st,2nd,3rd,4th], ...}
+  selectedThird: [],
+  r32Teams: [], // 32 teams in match order
+  r32Winners: {}, // matchNum -> teamName
+  r16Winners: {},
+  qfWinners: {},
+  sfWinners: {},
+  sfLosers: {},
+  bronzeWinner: null,
+  finalWinner: null,
+  finalLoser: null,
+};
+
+let currentGroup = 0; // index into GROUP_NAMES
+let groupOrder = []; // [teamName or null, null, null, null]
+
+// Round of 32 match pages (2 matches per page)
+const R32_MATCHES = [
+  {num:73, desc:"Group A Runners-Up vs Group B Runners-Up", getTeams: ()=>[gResult('A',1), gResult('B',1)]},
+  {num:74, desc:"Group E Winners vs Best 3rd (A/B/C/D/F)", getTeams: ()=>[gResult('E',0), bestThirdFrom(['A','B','C','D','F'], 74)]},
+  {num:75, desc:"Group F Winners vs Group C Runners-Up", getTeams: ()=>[gResult('F',0), gResult('C',1)]},
+  {num:76, desc:"Group C Winners vs Group F Runners-Up", getTeams: ()=>[gResult('C',0), gResult('F',1)]},
+  {num:77, desc:"Group I Winners vs Best 3rd (C/D/F/G/H)", getTeams: ()=>[gResult('I',0), bestThirdFrom(['C','D','F','G','H'], 77)]},
+  {num:78, desc:"Group E Runners-Up vs Group I Runners-Up", getTeams: ()=>[gResult('E',1), gResult('I',1)]},
+  {num:79, desc:"Group A Winners vs Best 3rd (C/E/F/H/I)", getTeams: ()=>[gResult('A',0), bestThirdFrom(['C','E','F','H','I'], 79)]},
+  {num:80, desc:"Group L Winners vs Best 3rd (E/H/I/J/K)", getTeams: ()=>[gResult('L',0), bestThirdFrom(['E','H','I','J','K'], 80)]},
+  {num:81, desc:"Group D Winners vs Best 3rd (B/E/F/I/J)", getTeams: ()=>[gResult('D',0), bestThirdFrom(['B','E','F','I','J'], 81)]},
+  {num:82, desc:"Group G Winners vs Best 3rd (A/E/H/I/J)", getTeams: ()=>[gResult('G',0), bestThirdFrom(['A','E','H','I','J'], 82)]},
+  {num:83, desc:"Group K Runners-Up vs Group L Runners-Up", getTeams: ()=>[gResult('K',1), gResult('L',1)]},
+  {num:84, desc:"Group H Winners vs Group J Runners-Up", getTeams: ()=>[gResult('H',0), gResult('J',1)]},
+  {num:85, desc:"Group B Winners vs Best 3rd (E/F/G/I/J)", getTeams: ()=>[gResult('B',0), bestThirdFrom(['E','F','G','I','J'], 85)]},
+  {num:86, desc:"Group J Winners vs Group H Runners-Up", getTeams: ()=>[gResult('J',0), gResult('H',1)]},
+  {num:87, desc:"Group K Winners vs Best 3rd (D/E/I/J/L)", getTeams: ()=>[gResult('K',0), bestThirdFrom(['D','E','I','J','L'], 87)]},
+  {num:88, desc:"Group D Runners-Up vs Group G Runners-Up", getTeams: ()=>[gResult('D',1), gResult('G',1)]},
+];
+
+// Pages: pairs of match indices for R32
+const R32_PAGES = [[0,1],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13],[14,15]];
+let currentR32Page = 0;
+
+const R16_MATCHES = [
+  {num:89, desc:"Winner M74 vs Winner M77", getTeams: ()=>[w32(74), w32(77)]},
+  {num:90, desc:"Winner M73 vs Winner M75", getTeams: ()=>[w32(73), w32(75)]},
+  {num:91, desc:"Winner M76 vs Winner M78", getTeams: ()=>[w32(76), w32(78)]},
+  {num:92, desc:"Winner M79 vs Winner M80", getTeams: ()=>[w32(79), w32(80)]},
+  {num:93, desc:"Winner M83 vs Winner M84", getTeams: ()=>[w32(83), w32(84)]},
+  {num:94, desc:"Winner M81 vs Winner M82", getTeams: ()=>[w32(81), w32(82)]},
+  {num:95, desc:"Winner M86 vs Winner M88", getTeams: ()=>[w32(86), w32(88)]},
+  {num:96, desc:"Winner M85 vs Winner M87", getTeams: ()=>[w32(85), w32(87)]},
+];
+const R16_PAGES = [[0,1],[2,3],[4,5],[6,7]];
+let currentR16Page = 0;
+
+const QF_MATCHES = [
+  {num:97, desc:"Winner M89 vs Winner M90", getTeams: ()=>[w16(89), w16(90)]},
+  {num:98, desc:"Winner M93 vs Winner M94", getTeams: ()=>[w16(93), w16(94)]},
+  {num:99, desc:"Winner M91 vs Winner M92", getTeams: ()=>[w16(91), w16(92)]},
+  {num:100, desc:"Winner M95 vs Winner M96", getTeams: ()=>[w16(95), w16(96)]},
+];
+const QF_PAGES = [[0,1],[2,3]];
+let currentQFPage = 0;
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function gResult(grp, pos) { return state.groupResults[grp] ? state.groupResults[grp][pos] : '?'; }
+
+// Maps each R32 match number that uses a third-place team -> the assigned team (computed once)
+let thirdPlaceAssignments = {};
+
+// The 8 third-place slots in the R32, each with the groups they draw from
+const THIRD_SLOTS = [
+  { match: 74,  groups: ['A','B','C','D','F'] },
+  { match: 77,  groups: ['C','D','F','G','H'] },
+  { match: 79,  groups: ['C','E','F','H','I'] },
+  { match: 80,  groups: ['E','H','I','J','K'] },
+  { match: 81,  groups: ['B','E','F','I','J'] },
+  { match: 82,  groups: ['A','E','H','I','J'] },
+  { match: 85,  groups: ['E','F','G','I','J'] },
+  { match: 87,  groups: ['D','E','I','J','L'] },
+];
+
+function assignThirdPlaceTeams() {
+  thirdPlaceAssignments = {};
+  const remaining = [...state.selectedThird];
+
+  // Try to fill each slot with a team from its preferred groups first
+  const unfilledSlots = [];
+  for (const slot of THIRD_SLOTS) {
+    const idx = remaining.findIndex(t => slot.groups.includes(getTeamGroup(t)));
+    if (idx !== -1) {
+      thirdPlaceAssignments[slot.match] = remaining[idx];
+      remaining.splice(idx, 1);
+    } else {
+      unfilledSlots.push(slot);
+    }
+  }
+  // Fill any remaining slots with leftover teams (any order)
+  for (const slot of unfilledSlots) {
+    thirdPlaceAssignments[slot.match] = remaining.shift() || '?';
+  }
+}
+
+function bestThirdFrom(groups, matchNum) {
+  return thirdPlaceAssignments[matchNum] || '?';
+}
+
+function getTeamGroup(team) {
+  for (const [g, teams] of Object.entries(GROUPS)) {
+    if (teams.includes(team)) return g;
+  }
+  return null;
+}
+function w32(matchNum) { return state.r32Winners[matchNum] || '?'; }
+function w16(matchNum) { return state.r16Winners[matchNum] || '?'; }
+function wQF(matchNum) { return state.qfWinners[matchNum] || '?'; }
+
+function flagImg(team, size=36) {
+  const h = Math.round(size * 0.66);
+  return `<img src="${FLAGS[team]||''}" alt="${team}" width="${size}" height="${h}" onerror="this.style.background='#eee'">`;
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════
+// PAGE 1: WELCOME
+// ═══════════════════════════════════════
+function startGame() {
+  const name = document.getElementById('player-name').value.trim();
+  if (!name) { document.getElementById('player-name').focus(); return; }
+  state.playerName = name;
+  currentGroup = 0;
+  renderGroupPage();
+  showPage('page-group');
+}
+
+// ═══════════════════════════════════════
+// PAGE 2: GROUP STAGE
+// ═══════════════════════════════════════
+function renderGroupPage() {
+  const gName = GROUP_NAMES[currentGroup];
+  const teams = GROUPS[gName];
+  const step = currentGroup + 1;
+
+  document.getElementById('group-title').textContent = `Group ${gName}`;
+  document.getElementById('group-step').textContent = `${step} / 12`;
+  document.getElementById('group-progress').style.width = `${(step/12)*100}%`;
+  document.getElementById('group-next-btn').textContent = step < 12 ? 'Save & Next →' : 'Submit →';
+
+  // Init order from saved state or blank
+  groupOrder = state.groupResults[gName] ? [...state.groupResults[gName]] : [null,null,null,null];
+
+  renderFlags();
+  renderTable();
+  document.getElementById('group-error').classList.remove('show');
+}
+
+function renderFlags() {
+  const gName = GROUP_NAMES[currentGroup];
+  const teams = GROUPS[gName];
+  const grid = document.getElementById('flags-grid');
+  grid.innerHTML = '';
+  teams.forEach(team => {
+    const pos = groupOrder.indexOf(team);
+    const selected = pos !== -1;
+    const btn = document.createElement('div');
+    btn.className = 'flag-btn' + (selected ? ' selected' : '');
+    btn.dataset.pos = selected ? pos+1 : '';
+    btn.innerHTML = `<img src="${FLAGS[team]}" alt="${team}">${flagNameShort(team)}`;
+    btn.onclick = () => toggleTeamPosition(team);
+    grid.appendChild(btn);
+  });
+}
+
+function flagNameShort(name) {
+  const map = {"Bosnia & Herzegovina":"Bosnia & Herz.","Czech Republic":"Czech Rep.","South Africa":"S. Africa","South Korea":"S. Korea","Saudi Arabia":"S. Arabia","New Zealand":"N. Zealand","Cape Verde":"C. Verde","DR Congo":"DR Congo","Ivory Coast":"Côte d'Ivoire"};
+  return `<span>${map[name]||name}</span>`;
+}
+
+function toggleTeamPosition(team) {
+  const pos = groupOrder.indexOf(team);
+  if (pos !== -1) {
+    // Deselect: remove from position
+    groupOrder[pos] = null;
+  } else {
+    // Assign to next empty slot
+    const next = groupOrder.indexOf(null);
+    if (next !== -1) groupOrder[next] = team;
+  }
+  renderFlags();
+  renderTable();
+}
+
+function renderTable() {
+  const table = document.getElementById('group-table');
+  table.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const team = groupOrder[i];
+    const row = document.createElement('div');
+    row.className = 'table-row';
+    row.dataset.index = i;
+    if (team) {
+      row.innerHTML = `
+        <span class="pos-num">${i+1}</span>
+        ${flagImg(team,32)}
+        <span class="row-name">${team}</span>
+        <span class="drag-handle" title="Drag to reorder">⠿</span>`;
+      // Drag events
+      row.draggable = true;
+      row.addEventListener('dragstart', dragStart);
+      row.addEventListener('dragover', dragOver);
+      row.addEventListener('drop', dragDrop);
+      row.addEventListener('dragend', dragEnd);
+    } else {
+      row.innerHTML = `<span class="pos-num">${i+1}</span><span class="empty-row">— not selected —</span>`;
+    }
+    table.appendChild(row);
+  }
+}
+
+let dragSrc = null;
+function dragStart(e) { dragSrc = +e.currentTarget.dataset.index; e.currentTarget.classList.add('dragging'); }
+function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dragEnd(e) { e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.table-row').forEach(r=>r.classList.remove('drag-over')); }
+function dragDrop(e) {
+  e.preventDefault();
+  const dest = +e.currentTarget.dataset.index;
+  if (dragSrc !== null && dragSrc !== dest) {
+    const tmp = groupOrder[dragSrc];
+    groupOrder[dragSrc] = groupOrder[dest];
+    groupOrder[dest] = tmp;
+    renderFlags();
+    renderTable();
+  }
+}
+
+// Touch drag support
+let touchDragSrc = null, touchClone = null;
+document.addEventListener('touchstart', (e) => {
+  const row = e.target.closest('.table-row');
+  if (!row || !row.dataset.index) return;
+  touchDragSrc = +row.dataset.index;
+  touchClone = row.cloneNode(true);
+  touchClone.style.cssText = `position:fixed;opacity:0.7;pointer-events:none;z-index:9999;width:${row.offsetWidth}px;`;
+  document.body.appendChild(touchClone);
+}, {passive:true});
+document.addEventListener('touchmove', (e) => {
+  if (touchClone === null) return;
+  const t = e.touches[0];
+  touchClone.style.left = (t.clientX - 60) + 'px';
+  touchClone.style.top = (t.clientY - 20) + 'px';
+}, {passive:true});
+document.addEventListener('touchend', (e) => {
+  if (touchClone === null) return;
+  touchClone.remove(); touchClone = null;
+  const t = e.changedTouches[0];
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  const row = el ? el.closest('.table-row') : null;
+  if (row && row.dataset.index !== undefined) {
+    const dest = +row.dataset.index;
+    if (touchDragSrc !== null && touchDragSrc !== dest) {
+      const tmp = groupOrder[touchDragSrc];
+      groupOrder[touchDragSrc] = groupOrder[dest];
+      groupOrder[dest] = tmp;
+      renderFlags(); renderTable();
+    }
+  }
+  touchDragSrc = null;
+});
+
+function groupNext() {
+  if (groupOrder.includes(null)) {
+    document.getElementById('group-error').classList.add('show');
+    return;
+  }
+  const gName = GROUP_NAMES[currentGroup];
+  state.groupResults[gName] = [...groupOrder];
+  currentGroup++;
+  if (currentGroup < 12) {
+    renderGroupPage();
+  } else {
+    renderQualifiedPage();
+    showPage('page-qualified');
+  }
+}
+
+// ═══════════════════════════════════════
+// PAGE 3: QUALIFIED
+// ═══════════════════════════════════════
+function renderQualifiedPage() {
+  const list = document.getElementById('qualified-list');
+  list.innerHTML = '';
+  GROUP_NAMES.forEach(g => {
+    const teams = state.groupResults[g];
+    const div = document.createElement('div');
+    div.className = 'qualified-group';
+    div.innerHTML = `<div class="qualified-group-label">Group ${g}</div>`;
+    [0,1,2,3].forEach(i => {
+      const row = document.createElement('div');
+      row.className = 'team-row';
+      const badge = i===0 ? '<span class="badge-qualified team-badge">1st ✓</span>'
+                   : i===1 ? '<span class="badge-qualified team-badge">2nd ✓</span>'
+                   : i===2 ? '<span class="badge-third team-badge">3rd</span>'
+                   : '<span class="badge-out team-badge">Elim.</span>';
+      row.innerHTML = `${flagImg(teams[i],36)}<span class="team-name">${teams[i]}</span>${badge}`;
+      div.appendChild(row);
+    });
+    list.appendChild(div);
+  });
+}
+
+function goToThirdSelect() {
+  renderThirdPage();
+  showPage('page-third');
+}
+
+// ═══════════════════════════════════════
+// PAGE 4: THIRD PLACE SELECTION
+// ═══════════════════════════════════════
+function renderThirdPage() {
+  const thirds = GROUP_NAMES.map(g => state.groupResults[g][2]);
+  state.selectedThird = [];
+  const grid = document.getElementById('third-grid');
+  // Fully replace the grid to remove all old event listeners
+  const newGrid = grid.cloneNode(false);
+  grid.parentNode.replaceChild(newGrid, grid);
+  newGrid.id = 'third-grid';
+  thirds.forEach(team => {
+    const btn = document.createElement('div');
+    btn.className = 'third-btn';
+    btn.dataset.team = team;
+    btn.innerHTML = `${flagImg(team,44)}<span>${team}</span><span class="check-icon">✓</span>`;
+    newGrid.appendChild(btn);
+  });
+  // Single delegated listener on the new grid
+  newGrid.addEventListener('click', (e) => {
+    const btn = e.target.closest('.third-btn');
+    if (!btn) return;
+    const team = btn.dataset.team;
+    const idx = state.selectedThird.indexOf(team);
+    if (idx !== -1) {
+      state.selectedThird.splice(idx, 1);
+      btn.classList.remove('selected');
+    } else {
+      if (state.selectedThird.length >= 8) return;
+      state.selectedThird.push(team);
+      btn.classList.add('selected');
+    }
+    updateThirdCount();
+    document.getElementById('third-error').classList.remove('show');
+  });
+  updateThirdCount();
+}
+
+function updateThirdCount() {
+  document.getElementById('third-count').textContent = state.selectedThird.length;
+}
+
+function submitThird() {
+  if (state.selectedThird.length !== 8) {
+    document.getElementById('third-error').classList.add('show');
+    return;
+  }
+  assignThirdPlaceTeams();
+  renderR32TeamsPage();
+  showPage('page-r32teams');
+}
+
+// ═══════════════════════════════════════
+// PAGE 5: R32 TEAMS
+// ═══════════════════════════════════════
+function renderR32TeamsPage() {
+  const list = document.getElementById('r32-teams-list');
+  list.innerHTML = '';
+  // 2 from each group + 8 thirds
+  const qualGroup = [];
+  GROUP_NAMES.forEach(g => {
+    qualGroup.push({team: state.groupResults[g][0], label:`Group ${g} 1st`});
+    qualGroup.push({team: state.groupResults[g][1], label:`Group ${g} 2nd`});
+  });
+  const thirdsSection = THIRD_SLOTS.map(s => ({team: thirdPlaceAssignments[s.match] || '?', match: s.match}));
+
+  const title1 = document.createElement('div');
+  title1.className = 'section-title';
+  title1.textContent = 'Group Stage Qualifiers (24)';
+  list.appendChild(title1);
+
+  const grid1 = document.createElement('div');
+  grid1.className = 'r32-teams';
+  qualGroup.forEach(({team, label}) => {
+    const el = document.createElement('div');
+    el.className = 'r32-team';
+    el.innerHTML = `${flagImg(team,28)}<span>${team}</span>`;
+    grid1.appendChild(el);
+  });
+  list.appendChild(grid1);
+
+  const div = document.createElement('div'); div.className = 'divider'; list.appendChild(div);
+
+  const title2 = document.createElement('div');
+  title2.className = 'section-title';
+  title2.textContent = 'Best 8 Third-Place Teams (8)';
+  list.appendChild(title2);
+
+  const grid2 = document.createElement('div');
+  grid2.className = 'r32-teams';
+  thirdsSection.forEach(({team, match}) => {
+    const el = document.createElement('div');
+    el.className = 'r32-team';
+    el.innerHTML = `${flagImg(team,28)}<span>${team}</span>`;
+    grid2.appendChild(el);
+  });
+  list.appendChild(grid2);
+}
+
+function goToR32Matches() {
+  currentR32Page = 0;
+  renderR32Page();
+  showPage('page-r32');
+}
+
+// ═══════════════════════════════════════
+// PAGE 6: R32 MATCHES
+// ═══════════════════════════════════════
+function renderR32Page() {
+  const idxs = R32_PAGES[currentR32Page];
+  const total = R32_PAGES.length;
+  document.getElementById('r32-step').textContent = `${currentR32Page+1} / ${total}`;
+  document.getElementById('r32-progress').style.width = `${((currentR32Page+1)/total)*100}%`;
+  document.getElementById('r32-btn').textContent = currentR32Page < total-1 ? 'Save & Next →' : 'Submit →';
+
+  const content = document.getElementById('r32-content');
+  content.innerHTML = '';
+  idxs.forEach(mi => {
+    const m = R32_MATCHES[mi];
+    const [t1, t2] = m.getTeams();
+    content.appendChild(buildMatchCard(m.num, m.desc, t1, t2, 'r32', state.r32Winners[m.num]));
+  });
+  document.getElementById('r32-error').classList.remove('show');
+}
+
+function buildMatchCard(num, desc, t1, t2, type, selected) {
+  const card = document.createElement('div');
+  card.className = 'match-card';
+  card.innerHTML = `<div class="match-header">Match ${num}</div>
+    <div style="font-size:11px;color:var(--muted);padding:6px 14px 0;">${desc}</div>
+    <div class="match-teams">
+      <div class="match-team${selected===t1?' selected':''}" data-match="${num}" data-team="${t1}" data-type="${type}" onclick="pickWinner(${num},'${t1}','${type}')">
+        ${flagImg(t1,56)}<span>${t1}</span>
+      </div>
+      <div class="vs-divider">VS</div>
+      <div class="match-team${selected===t2?' selected':''}" data-match="${num}" data-team="${t2}" data-type="${type}" onclick="pickWinner(${num},'${t2}','${type}')">
+        ${flagImg(t2,56)}<span>${t2}</span>
+      </div>
+    </div>`;
+  return card;
+}
+
+function pickWinner(matchNum, team, type) {
+  const store = {r32: state.r32Winners, r16: state.r16Winners, qf: state.qfWinners, sf: state.sfWinners}[type];
+  store[matchNum] = team;
+  // Update UI
+  document.querySelectorAll(`[data-match="${matchNum}"][data-type="${type}"]`).forEach(el => {
+    el.classList.toggle('selected', el.dataset.team === team);
+  });
+}
+
+function r32Next() {
+  const idxs = R32_PAGES[currentR32Page];
+  for (const mi of idxs) {
+    if (!state.r32Winners[R32_MATCHES[mi].num]) {
+      document.getElementById('r32-error').classList.add('show');
+      return;
+    }
+  }
+  currentR32Page++;
+  if (currentR32Page < R32_PAGES.length) {
+    renderR32Page();
+  } else {
+    renderR32Results();
+    showPage('page-r32results');
+  }
+}
+
+// ═══════════════════════════════════════
+// PAGE 7: R32 RESULTS
+// ═══════════════════════════════════════
+function renderR32Results() {
+  const list = document.getElementById('r32-winners-list');
+  list.innerHTML = `<div class="section-title">Round of 32 Winners</div>`;
+  R32_MATCHES.forEach(m => {
+    const winner = state.r32Winners[m.num];
+    const row = document.createElement('div');
+    row.className = 'result-team';
+    row.innerHTML = `${flagImg(winner,40)}<span class="result-name">${winner}</span><span class="result-match">M${m.num}</span>`;
+    list.appendChild(row);
+  });
+}
+
+function goToR16Matches() {
+  currentR16Page = 0;
+  renderR16Page();
+  showPage('page-r16');
+}
+
+// ═══════════════════════════════════════
+// PAGE 8: R16
+// ═══════════════════════════════════════
+function renderR16Page() {
+  const idxs = R16_PAGES[currentR16Page];
+  const total = R16_PAGES.length;
+  document.getElementById('r16-step').textContent = `${currentR16Page+1} / ${total}`;
+  document.getElementById('r16-progress').style.width = `${((currentR16Page+1)/total)*100}%`;
+  document.getElementById('r16-btn').textContent = currentR16Page < total-1 ? 'Save & Next →' : 'Submit →';
+
+  const content = document.getElementById('r16-content');
+  content.innerHTML = '';
+  idxs.forEach(mi => {
+    const m = R16_MATCHES[mi];
+    const [t1, t2] = m.getTeams();
+    content.appendChild(buildMatchCard(m.num, m.desc, t1, t2, 'r16', state.r16Winners[m.num]));
+  });
+  document.getElementById('r16-error').classList.remove('show');
+}
+
+function r16Next() {
+  const idxs = R16_PAGES[currentR16Page];
+  for (const mi of idxs) {
+    if (!state.r16Winners[R16_MATCHES[mi].num]) {
+      document.getElementById('r16-error').classList.add('show');
+      return;
+    }
+  }
+  currentR16Page++;
+  if (currentR16Page < R16_PAGES.length) {
+    renderR16Page();
+  } else {
+    renderQFTeamsPage();
+    showPage('page-qfteams');
+  }
+}
+
+// ═══════════════════════════════════════
+// PAGE 9: QF TEAMS
+// ═══════════════════════════════════════
+function renderQFTeamsPage() {
+  const list = document.getElementById('qf-teams-list');
+  list.innerHTML = '';
+  R16_MATCHES.forEach(m => {
+    const winner = state.r16Winners[m.num];
+    const row = document.createElement('div');
+    row.className = 'team-row';
+    row.innerHTML = `${flagImg(winner,36)}<span class="team-name">${winner}</span><span class="badge-qualified team-badge">M${m.num}</span>`;
+    list.appendChild(row);
+  });
+}
+
+function goToQF() {
+  currentQFPage = 0;
+  renderQFPage();
+  showPage('page-qf');
+}
+
+// ═══════════════════════════════════════
+// PAGE 10: QUARTER-FINALS
+// ═══════════════════════════════════════
+function renderQFPage() {
+  const idxs = QF_PAGES[currentQFPage];
+  const total = QF_PAGES.length;
+  document.getElementById('qf-step').textContent = `${currentQFPage+1} / ${total}`;
+  document.getElementById('qf-progress').style.width = `${((currentQFPage+1)/total)*100}%`;
+  document.getElementById('qf-btn').textContent = currentQFPage < total-1 ? 'Save & Next →' : 'Submit →';
+
+  const content = document.getElementById('qf-content');
+  content.innerHTML = '';
+  idxs.forEach(mi => {
+    const m = QF_MATCHES[mi];
+    const [t1, t2] = m.getTeams();
+    content.appendChild(buildMatchCard(m.num, m.desc, t1, t2, 'qf', state.qfWinners[m.num]));
+  });
+  document.getElementById('qf-error').classList.remove('show');
+}
+
+function qfNext() {
+  const idxs = QF_PAGES[currentQFPage];
+  for (const mi of idxs) {
+    if (!state.qfWinners[QF_MATCHES[mi].num]) {
+      document.getElementById('qf-error').classList.add('show');
+      return;
+    }
+  }
+  currentQFPage++;
+  if (currentQFPage < QF_PAGES.length) {
+    renderQFPage();
+  } else {
+    renderQFResults();
+    showPage('page-qfresults');
+  }
+}
+
+// ═══════════════════════════════════════
+// PAGE 11: QF RESULTS
+// ═══════════════════════════════════════
+function renderQFResults() {
+  const list = document.getElementById('qf-winners-list');
+  list.innerHTML = `<div class="section-title">Quarter-Final Winners</div>`;
+  QF_MATCHES.forEach(m => {
+    const winner = state.qfWinners[m.num];
+    const row = document.createElement('div');
+    row.className = 'result-team';
+    row.innerHTML = `${flagImg(winner,40)}<span class="result-name">${winner}</span><span class="result-match">M${m.num}</span>`;
+    list.appendChild(row);
+  });
+}
+
+function goToSF() {
+  renderSFPage();
+  showPage('page-sf');
+}
+
+// ═══════════════════════════════════════
+// PAGE 12: SEMI-FINALS
+// ═══════════════════════════════════════
+function renderSFPage() {
+  const SF_MATCHES = [
+    {num:101, desc:"Winner M97 vs Winner M98", getTeams: ()=>[wQF(97), wQF(98)]},
+    {num:102, desc:"Winner M99 vs Winner M100", getTeams: ()=>[wQF(99), wQF(100)]},
+  ];
+  const content = document.getElementById('sf-content');
+  content.innerHTML = '';
+  SF_MATCHES.forEach(m => {
+    const [t1,t2] = m.getTeams();
+    content.appendChild(buildMatchCard(m.num, m.desc, t1, t2, 'sf', state.sfWinners[m.num]));
+  });
+}
+
+function sfSubmit() {
+  if (!state.sfWinners[101] || !state.sfWinners[102]) {
+    document.getElementById('sf-error').classList.add('show');
+    return;
+  }
+  // Losers
+  const [t101a, t101b] = [wQF(97), wQF(98)];
+  const [t102a, t102b] = [wQF(99), wQF(100)];
+  state.sfLosers[101] = state.sfWinners[101] === t101a ? t101b : t101a;
+  state.sfLosers[102] = state.sfWinners[102] === t102a ? t102b : t102a;
+  renderBronzePage();
+  showPage('page-bronze');
+}
+
+// ═══════════════════════════════════════
+// PAGE 13: BRONZE
+// ═══════════════════════════════════════
+function renderBronzePage() {
+  const t1 = state.sfLosers[101], t2 = state.sfLosers[102];
+  const content = document.getElementById('bronze-content');
+  content.innerHTML = '';
+  const info = document.createElement('div');
+  info.className = 'info-note';
+  info.textContent = 'The two semi-final losers compete for 3rd place.';
+  content.appendChild(info);
+  content.appendChild(buildMatchCard(103, "3rd Place Final", t1, t2, 'sf', state.sfWinners[103]));
+}
+
+function bronzeSubmit() {
+  const t1 = state.sfLosers[101], t2 = state.sfLosers[102];
+  if (!state.sfWinners[103]) {
+    document.getElementById('bronze-error').classList.add('show');
+    return;
+  }
+  renderFinalPage();
+  showPage('page-final');
+}
+
+// ═══════════════════════════════════════
+// PAGE 14: FINAL
+// ═══════════════════════════════════════
+function renderFinalPage() {
+  const t1 = state.sfWinners[101], t2 = state.sfWinners[102];
+  const content = document.getElementById('final-content');
+  content.innerHTML = '';
+  const info = document.createElement('div');
+  info.className = 'info-note';
+  info.textContent = 'The two semi-final winners compete for the World Cup title!';
+  content.appendChild(info);
+  content.appendChild(buildMatchCard(104, "🏆 World Cup Final", t1, t2, 'sf', state.sfWinners[104]));
+}
+
+function finalSubmit() {
+  if (!state.sfWinners[104]) {
+    document.getElementById('final-error').classList.add('show');
+    return;
+  }
+  const winner = state.sfWinners[104];
+  const finalists = [state.sfWinners[101], state.sfWinners[102]];
+  const loser = finalists.find(t => t !== winner);
+  const third = state.sfWinners[103];
+  // fourth is the bronze final loser (the one who was NOT picked as third)
+  const bronzeTeams = [state.sfLosers[101], state.sfLosers[102]];
+  const fourth = bronzeTeams.find(t => t !== third) || bronzeTeams[1];
+
+  // Render champion page
+  document.getElementById('champ-greeting').textContent = `${state.playerName}'s prediction`;
+  document.getElementById('champ-flag').src = FLAGS[winner];
+  document.getElementById('champ-name').textContent = winner;
+
+  document.getElementById('res-champion').textContent = winner;
+  document.getElementById('res-champion-flag').src = FLAGS[winner];
+  document.getElementById('res-runnerup').textContent = loser;
+  document.getElementById('res-runnerup-flag').src = FLAGS[loser];
+  document.getElementById('res-third').textContent = third;
+  document.getElementById('res-third-flag').src = FLAGS[third];
+  document.getElementById('res-fourth').textContent = fourth || '—';
+  if (fourth) document.getElementById('res-fourth-flag').src = FLAGS[fourth]||'';
+
+  showPage('page-champion');
+}
+</script>
+</body>
+</html>
